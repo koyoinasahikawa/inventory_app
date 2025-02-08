@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Welcome to the Home Page</h1>
+    <ul>
+        <li><a href="{{ url_for('hello') }}">Hello Page</a></li>
+        <li><a href="{{ url_for('about') }}">About Page</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact Page</a></li>
+        <li><a href="{{ url_for('show_weather', weather='晴れ') }}">Weather Page (晴れ)</a></li>
+        <li><a href="{{ url_for('show_weather', weather='雨') }}">Weather Page (雨)</a></li>
+        <li><a href="{{ url_for('show_weather', weather='曇り') }}">Weather Page (曇り)</a></li>
+    </ul>
+
+    <button id="myButton">Click me</button>
+
+    <!-- JavaScriptファイルの読み込み -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
