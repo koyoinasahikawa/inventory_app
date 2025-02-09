@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template_string, redirect, url_for, session
+import subprocess
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # セッションの秘密鍵
@@ -19,6 +20,14 @@ LOGIN_FORM = '''
     </form>
     <p><a href="/">ホームへ戻る</a></p>
 '''
+
+def get_current_git_branch():
+    """現在のGitブランチを取得する関数"""
+    try:
+        branch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip().decode('utf-8')
+        return branch
+    except subprocess.CalledProcessError:
+        return "Gitブランチの取得に失敗しました"
 
 @app.route('/')
 def home():
@@ -44,7 +53,8 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if 'username' in session:
-        return f'<h1>ダッシュボード</h1><p>ようこそ {session["username"]} さん</p><p><a href="/logout">ログアウト</a></p>'
+        git_branch = get_current_git_branch()  # 現在のGitブランチを取得
+        return f'<h1>ダッシュボード</h1><p>ようこそ {session["username"]} さん</p><p>現在のGitブランチ: {git_branch}</p><p><a href="/logout">ログアウト</a></p>'
     return '<h1>ダッシュボード</h1><p>ログインしていません。</p><p><a href="/login">ログインページへ</a></p>'
 
 @app.route('/logout')
